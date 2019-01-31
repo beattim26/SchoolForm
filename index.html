@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/form.css">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+<body>
+    <main id="app">
+        <div class="container">
+            <div class="signup form">
+                <h2 class="signup-title">Create Your Online Account</h2>
+                <p class="signup-text">User names must:</p>
+                <ul class="signup-list">
+                    <li class="signup-list__item">Be a maximum of 50 characters (not case sensitive)</li>
+                    <li class="signup-list__item">Not contain any spaces</li>
+                </ul>
+                <p class="signup-text">Valid passwords must:</p>
+                <ul class="signup-list">
+                    <li class="signup-list__item">Be no more than 30 characters</li>
+                    <li class="signup-list__item">NOT contain any blank spaces or tabs</li>
+                </ul>
+                <form class="signup-form" @submit.prevent="checkedSignup">
+                    <div class="form-group">
+                        <label for="signupLogin" class="form-label">User Name</label>
+                        <input type="name" class="form-control" id="signupLogin" placeholder="Enter User Name" maxlength="50" v-model="userInfo.userName" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                                <label for="signupPassword" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="signupPassword" placeholder="Enter Password" v-model="userInfo.password" required>
+                            </div>
+                        </div>
+                        <div class="col col-sm-6">
+                            <div class="form-group">
+                                <label for="signupRePassword" class="form-label">Re-type Password</label>
+                                <input type="password" class="form-control" id="signupRePassword" placeholder="Re-type Password" v-model="userInfo.rePassword" required>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="signup-text signup-form__text">Please supply us with some additional information about yourself:</p>
+                    <div class="row">
+                        <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                                <label for="signupFirstName" class="form-label required-field">First Name</label>
+                                <input type="text" class="form-control" id="signupFirstName" placeholder="Enter Your First Name" v-model="userInfo.firstName" required>
+                            </div>
+                        </div>
+                        <div class="col col-sm-6">
+                            <div class="form-group">
+                                <label for="signupLastName" class="form-label required-field">Last Name</label>
+                                <input type="text" class="form-control" id="signupLastName" placeholder="Enter Your Last Name" v-model="userInfo.lastName" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                                <label for="signupEmail" class="form-label required-field">Email Address</label>
+                                <input type="email" class="form-control" id="signupEmail" aria-describedby="emailHelp" placeholder="Enter email" v-model="userInfo.email" required>
+                            </div>
+                        </div>
+                        <div class="col col-sm-6">
+                            <div class="form-group ">
+                                <label for="signupPhone" class="form-label required-field">Phone Number</label>
+                                <input type="tel" class="form-control" id="signupPhone" aria-describedby="emailHelp" placeholder="Enter Your Phone Number" v-model="userInfo.phone" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button d-flex justify-content-end">
+                        <button type="submit" class="btn btn-outline-success btn-signup">Create Account</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="container" v-if="step == 1">
+            <div class="select-application form">
+                <h2 class="signup-title text-center">Select Your Application</h2>
+                <div class="buttons">
+                    <button type="button" class="btn btn-secondary btn-lg btn-block" id="kinderButton" @click="choiceApplication">Kindergarten</button>
+                    <button type="button" class="btn btn-secondary btn-lg btn-block" id="gradesButton" @click="choiceApplication">Grades One through Twelve</button>
+                </div>
+                </form>
+            </div>
+        </div>
+        <div class="container" v-else-if="step == 2">
+            <div class="application-kindergarten form">
+                <h2 class="application-title mb-4 text-center">Parent Application for Kindergarten</h2>
+                <form action="" class="kindergarten-form" @submit.prevent="step = 4">
+                    <div class="form-group">
+                        <div class="row align-items-center">
+                            <div class="col-6">
+                                <label for="kindergartenStarting">Applying for admission to Kindergarten starting in the fall of</label>
+                            </div>
+                            <div class="col-6">
+                                <select class="form-control" id="kindergartenStarting" required v-model="kindergartenInfo.starting">
+                                    <option value="2019-2020">2019-2020</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="kindergartenFirstName" class="form-label">Full legal name of applicant</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" id="kindergartenFirstName" placeholder="First" required v-model="kindergartenInfo.firstName">
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" id="kindergartenMiddleName" placeholder="Middle" v-model="kindergartenInfo.middleName">
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" id="kindergartenLastName" placeholder="Last" required v-model="kindergartenInfo.lastName">
+                        </div>
+                        <div class="col-6 mt-3">
+                            <label for="kindergartenCalledName">Name applicant wishes to be called at school:</label>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <input type="text" class="form-control" id="kindergartenCalledName" placeholder="Name" v-model="kindergartenInfo.nameCalled">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12 col-sm-4 pb-2 pb-sm-0">
+                            <label for="kindergartenDateBirth">Date of Birth</label>
+                            <input class="form-control" type="date" id="kindergartenDateBirth" required v-model="kindergartenInfo.birthDate">
+                        </div>
+                        <div class="col-6 col-sm-4">
+                            <label for="kindergartenAge">Age</label>
+                            <input type="number" class="form-control" id="kindergartenAge" placeholder="Enter Age" v-model="kindergartenInfo.childAge">
+                        </div>
+                        <div class="col-6 col-sm-4">
+                            <label for="kindergartenGender">Gender</label>
+                            <select class="form-control" id="kindergartenGender" required v-model="kindergartenInfo.childGender">
+                                <option value="none"></option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                    <small id="birthHelp" class="form-text text-muted m-0 mb-2">Applicants to Kindergarten should have turned five prior to August 1 of the year they wish to enter Viewpoint.</small>
+                    <label for="kindergartenPlaceBirth" class="form-label">Place and Country of Birth</label>
+                    <div class="form-group row">
+                        <div class="col-12 col-sm-6">
+                            <input type="text" class="form-control mb-2 mb-sm-0" id="kindergartenPlaceBirth" placeholder="Enter Place of Birth" required v-model="kindergartenInfo.placeBirth">
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <input type="text" class="form-control" id="kindergartenCountryCitizenship" placeholder="Enter Country of Citizenship" required v-model="kindergartenInfo.citizenship">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row align-items-center">
+                            <div class="col-12 col-md-4 mt-2">
+                                <label for="kindergartenVisaViewpoint">If not a U.S. Citizen, does applicant require an F1 visa to study at Viewpoint?</label>
+                            </div>
+                            <div class="col-12 col-md-2">
+                                <select class="form-control mb-2 mb-md-0" id="kindergartenVisaViewpoint" v-model="kindergartenInfo.visaViewpoint">
+                                    <option value="none"></option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-2 mt-2">
+                                <label for="kindergartenVisaType">Visa type if not F1</label>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <input type="text" class="form-control" id="kindergartenVisaType" placeholder="Enter type of Visa" v-model="kindergartenInfo.visaType">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input kindergarten-check" type="checkbox" required>I am applying my child to repeat the Kindergarten year.
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="kindergartenSchoolName" class="form-label">School Information</label>
+                            <small id="schoolHelp" class="form-text text-muted m-0 mb-2">Please list all the schools attended by the applicant, beginning with the current school year.</small>
+                        </div>
+                        <div class="col-12 row mb-2" v-for="item in schoolList">
+                            <div class="col-12 col-sm-6 col-lg-3 mb-3">
+                                <input type="text" class="form-control" id="kindergartenSchoolName" placeholder="Current School Name" v-model="item.schoolName">
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg-3 mb-2">
+                                <input type="text" class="form-control" id="kindergartenAdressSchool" placeholder="Street Address" v-model="item.schoolAdress">
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg-3 mb-2">
+                                <input type="text" class="form-control" id="kindergartenCitySchool" placeholder="City" v-model="item.schoolCity">
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg-3 mb-2">
+                                <select class="form-control mb-2" id="kindergartenStateSchool" v-model="item.schoolState">
+                                    <option value="none">State</option>
+                                    <option value="AK">AK</option>
+                                    <option value="AL">AL</option>
+                                    <option value="AR">AR</option>
+                                    <option value="AZ">AZ</option>
+                                    <option value="BC">BC</option>
+                                    <option value="CA">CA</option>
+                                    <option value="CO">CO</option>
+                                    <option value="CT">CT</option>
+                                    <option value="D">D</option>
+                                    <option value="DC">DC</option>
+                                    <option value="DE">DE</option>
+                                    <option value="FL">FL</option>
+                                    <option value="GA">GA</option>
+                                    <option value="HI">HI</option>
+                                    <option value="IA">IA</option>
+                                    <option value="ID">ID</option>
+                                    <option value="IL">IL</option>
+                                    <option value="IN">IN</option>
+                                    <option value="KS">KS</option>
+                                    <option value="KY">KY</option>
+                                    <option value="LA">LA</option>
+                                    <option value="MA">MA</option>
+                                    <option value="MD">MD</option>
+                                    <option value="ME">ME</option>
+                                    <option value="MI">MI</option>
+                                    <option value="MN">MN</option>
+                                    <option value="MO">MO</option>
+                                    <option value="MS">MS</option>
+                                    <option value="MT">MT</option>
+                                    <option value="NC">NC</option>
+                                    <option value="ND">ND</option>
+                                    <option value="NE">NE</option>
+                                    <option value="NH">NH</option>
+                                    <option value="NJ">NJ</option>
+                                    <option value="NM">NM</option>
+                                    <option value="NV">NV</option>
+                                    <option value="NY">NY</option>
+                                    <option value="OA">OA</option>
+                                    <option value="OH">OH</option>
+                                    <option value="OK">OK</option>
+                                    <option value="ON">ON</option>
+                                    <option value="OR">OR</option>
+                                    <option value="PA">PA</option>
+                                    <option value="PS">PS</option>
+                                    <option value="QB">QB</option>
+                                    <option value="RI">RI</option>
+                                    <option value="SC">SC</option>
+                                    <option value="SD">SD</option>
+                                    <option value="TN">TN</option>
+                                    <option value="TX">TX</option>
+                                    <option value="UT">UT</option>
+                                    <option value="VA">VA</option>
+                                    <option value="VI">VI</option>
+                                    <option value="VT">VT</option>
+                                    <option value="WA">WA</option>
+                                    <option value="WI">WI</option>
+                                    <option value="WV">WV</option>
+                                    <option value="WY">WY</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-6 mb-2">
+                                <label for="kindergartenDatesFrom">Dates Attended From</label>
+                                <input class="form-control" type="date" id="kindergartenDatesFrom" v-model="item.schoolDatesFrom">
+                            </div>
+                            <div class="col-12 col-md-6 mb-2">
+                                <label for="kindergartenDatesTo">Dates Attended To</label>
+                                <input class="form-control" type="date" id="kindergartenDatesTo" v-model="item.schoolDatesTo">
+                            </div>
+                        </div>
+                        <div class="col-2 col-md-2 mb-2 d-flex align-items-end justify-content-start">
+                            <button type="button" class="btn btn-primary btn-sm mb-1 btn-school" @click="addSchool">Add Another School</button>
+                        </div>
+                    </div>
+                    <div class="button d-flex justify-content-between">
+                        <button type="submit" class="btn btn-outline-danger" @click="step = 1">Cancel</button>
+                        <button type="submit" class="btn btn-outline-success btn-next">Next</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="container" v-else-if="step == 3">
+            <div class="school-application form">
+                <h2 class="application-title mb-4 text-center">Parent Application for Grades One through Twelve</h2>
+                <form action="" class="school-form" @submit.prevent="step = 4">
+                    <div class="form-group">
+                        <div class="row align-items-center">
+                            <div class="col-6 col-lg-3">
+                                <label for="admissionToGrade">Applying for admission to Grade</label>
+                            </div>
+                            <div class="col-6 col-lg-3">
+                                <select class="form-control mb-2 mb-lg-0" id="admissionToGrade" required v-model="gradesInfo.admissionGrade">
+                                    <option></option>
+                                    <option value="kindergarten">Kindergarten</option>
+                                    <option value="first">First</option>
+                                    <option value="second">Second</option>
+                                    <option value="fourth">Fourth</option>
+                                    <option value="fifth">Fifth</option>
+                                    <option value="sixth">Sixth</option>
+                                    <option value="seventh">Seventh</option>
+                                    <option value="eighth">Eighth</option>
+                                    <option value="ninth">Ninth</option>
+                                    <option value="tenth">Tenth</option>
+                                    <option value="eleventh">Eleventh</option>
+                                    <option value="twelfth">Twelfth</option>
+                                </select>
+                            </div>
+                            <div class="col-6 col-lg-3">
+                                <label for="schoolStarting">Starting in the fall of</label>
+                            </div>
+                            <div class="col-6 col-lg-3">
+                                <select class="form-control" id="schoolStarting" required v-model="gradesInfo.starting">
+                                    <option value="2019-2020">2019-2020</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="schoolFirstName" class="form-label">Full legal name of applicant</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" id="schoolFirstName" placeholder="First" required v-model="gradesInfo.firstName">
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" id="schoolMiddleName" placeholder="Middle" v-model="gradesInfo.middleName">
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" id="schoolLastName" placeholder="Last" required v-model="gradesInfo.lastName">
+                        </div>
+                        <div class="col-6 mt-3">
+                            <label for="schoolCalledName">Name applicant wishes to be called at school:</label>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <input type="text" class="form-control" id="schoolCalledName" placeholder="Name" v-model="gradesInfo.nameCalled">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12 col-sm-4 pb-2 pb-sm-0">
+                            <label for="schoolDateBirth">Date of Birth</label>
+                            <input class="form-control" type="date" id="schoolDateBirth" required v-model="gradesInfo.birthDate">
+                        </div>
+                        <div class="col-6 col-sm-4">
+                            <label for="schoolAge">Age</label>
+                            <input type="number" class="form-control" id="schoolAge" placeholder="Enter Age" required v-model="gradesInfo.childAge">
+                        </div>
+                        <div class="col-6 col-sm-4">
+                            <label for="schoolGender">Gender</label>
+                            <select class="form-control" id="schoolGender" v-model="gradesInfo.childGender" required>
+                                <option value="none"></option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                    <small id="birthHelp" class="form-text text-muted m-0 mb-2">Applicants to Kindergarten should have turned five prior to August 1 of the year they wish to enter Viewpoint.</small>
+                    <label for="schoolPlaceBirth" class="form-label">Place and Country of Birth</label>
+                    <div class="form-group row">
+                        <div class="col-12 col-sm-6">
+                            <input type="text" class="form-control mb-2 mb-sm-0" id="schoolPlaceBirth" placeholder="Enter Place of Birth" required>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <input type="text" class="form-control" id="schoolCountryCitizenship" placeholder="Enter Country of Citizenship" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row align-items-center">
+                            <div class="col-12 col-md-4 mt-2">
+                                <label for="schoolVisaViewpoint">If not a U.S. Citizen, does applicant require an F1 visa to study at Viewpoint?</label>
+                            </div>
+                            <div class="col-12 col-md-2">
+                                <select class="form-control mb-2 mb-md-0" id="schoolVisaViewpoint" v-model="gradesInfo.visaViewpoint">
+                                    <option value="none"></option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-2 mt-2">
+                                <label for="schoolVisaType">Visa type if not F1</label>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <input type="text" class="form-control" id="schoolVisaType" placeholder="Enter type of Visa" v-model="gradesInfo.visaType">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row align-items-center">
+                            <div class="col-6 col-lg-3 mt-2">
+                                <label for="schoolApplyViewpoint">Has this child applied to Viewpoint before?</label>
+                            </div>
+                            <div class="col-6 col-lg-3">
+                                <select class="form-control mb-2 mb-lg-0" id="schoolApplyViewpoint" v-model="gradesInfo.appliedViewpointBefore">
+                                    <option></option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                            <div class="col-6 col-lg-1 mt-2">
+                                <label for="schoolViewpointWhen">When?</label>
+                            </div>
+                            <div class="col-6 col-lg-5">
+                                <input type="text" class="form-control" id="schoolViewpointWhen" placeholder="Enter When" v-model="gradesInfo.appliedViewpointWhen">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input school-check" type="checkbox" required>I am applying my child to repeat this grade.
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="schoolViewpointTests" class="form-label">Testing</label>
+                        </div>
+                        <div class="col-12">
+                            <small id="testingHelp" class="form-text text-muted m-0 mb-2">Applicants to Grades 5-12 must take either the Independent School Entrance Exam (ISEE) or the Secondary School Admission Test (SSAT). Please register for the ISEE online at <a href="https://www.erblearn.org/parents/isee-overview">www.iseetest.org</a> or the SSAT online at <a href="https://ssat.org">www.ssat.org</a>.</small>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <label for="schoolViewpointTests">Please list the test(s) and testing date(s) completed or scheduled.</label>
+                        </div>
+                        <div class="col-6">
+                            <input type="text" class="form-control" id="schoolViewpointTests" placeholder="Enter Test/Date" v-model="gradesInfo.testing">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="" class="form-label">Referal</label>
+                        </div>
+                        <div class="col-6 mt-md-2">
+                            <label for="schoolViewpointReferal">I/We have been referred to Viewpoint by:</label>
+                        </div>
+                        <div class="col-6">
+                            <input type="text" class="form-control" id="schoolViewpointReferal" placeholder="Enter Name" v-model="gradesInfo.referal">
+                        </div>
+                    </div>
+                    <div class="button d-flex justify-content-between">
+                        <button type="submit" class="btn btn-outline-danger" @click="step = 1">Cancel</button>
+                        <button type="submit" class="btn btn-outline-success btn-next">Next</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="container" v-else-if="step == 4">
+            <div class="parent-info form">
+                <h2 class="application-title text-center">Parent Information</h2>
+                <form action="" class="kindergarten-form" @submit.prevent="step = 5">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="parentInfoHomeAdress" class="form-label">Parent Adress</label>
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <input type="text" class="form-control" id="parentInfoHomeAdress" placeholder="Home Adress" required v-model="parrentsInfo.homeAdress">
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <input type="text" class="form-control" id="parentInfoCity" placeholder="City" required v-model="parrentsInfo.cityAdress">
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <select class="form-control" id="parentStateAdress" v-model="parrentsInfo.stateAdress" required>
+                                <option value="none">State</option>
+                                <option value="AK">AK</option>
+                                <option value="AL">AL</option>
+                                <option value="AR">AR</option>
+                                <option value="AZ">AZ</option>
+                                <option value="BC">BC</option>
+                                <option value="CA">CA</option>
+                                <option value="CO">CO</option>
+                                <option value="CT">CT</option>
+                                <option value="D">D</option>
+                                <option value="DC">DC</option>
+                                <option value="DE">DE</option>
+                                <option value="FL">FL</option>
+                                <option value="GA">GA</option>
+                                <option value="HI">HI</option>
+                                <option value="IA">IA</option>
+                                <option value="ID">ID</option>
+                                <option value="IL">IL</option>
+                                <option value="IN">IN</option>
+                                <option value="KS">KS</option>
+                                <option value="KY">KY</option>
+                                <option value="LA">LA</option>
+                                <option value="MA">MA</option>
+                                <option value="MD">MD</option>
+                                <option value="ME">ME</option>
+                                <option value="MI">MI</option>
+                                <option value="MN">MN</option>
+                                <option value="MO">MO</option>
+                                <option value="MS">MS</option>
+                                <option value="MT">MT</option>
+                                <option value="NC">NC</option>
+                                <option value="ND">ND</option>
+                                <option value="NE">NE</option>
+                                <option value="NH">NH</option>
+                                <option value="NJ">NJ</option>
+                                <option value="NM">NM</option>
+                                <option value="NV">NV</option>
+                                <option value="NY">NY</option>
+                                <option value="OA">OA</option>
+                                <option value="OH">OH</option>
+                                <option value="OK">OK</option>
+                                <option value="ON">ON</option>
+                                <option value="OR">OR</option>
+                                <option value="PA">PA</option>
+                                <option value="PS">PS</option>
+                                <option value="QB">QB</option>
+                                <option value="RI">RI</option>
+                                <option value="SC">SC</option>
+                                <option value="SD">SD</option>
+                                <option value="TN">TN</option>
+                                <option value="TX">TX</option>
+                                <option value="UT">UT</option>
+                                <option value="VA">VA</option>
+                                <option value="VI">VI</option>
+                                <option value="VT">VT</option>
+                                <option value="WA">WA</option>
+                                <option value="WI">WI</option>
+                                <option value="WV">WV</option>
+                                <option value="WY">WY</option>
+                            </select>
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <input type="text" class="form-control" id="parentInfoZip" placeholder="Zip" required v-model="parrentsInfo.zipAdress">
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <input type="text" class="form-control" id="parentInfoCountry" placeholder="Country" required v-model="parrentsInfo.countryAdress">
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <input type="tel" class="form-control" id="parentInfoPhone" placeholder="Phone Number" required v-model="parrentsInfo.phoneAdress">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-0">
+                        <div class="col-12">
+                            <label for="parentFirstInfoCellphone" class="form-label">Parent or Guardian 1 First</label>
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <input type="text" class="form-control" id="parentFirstInfoFirstName" placeholder="First Name" required v-model="firstParentInfo.firstName">
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <input type="text" class="form-control" id="parentFirstInfoSecondName" placeholder="Last Name" required v-model="firstParentInfo.lastName">
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <input type="tel" class="form-control" id="parentFirstInfoCellphone" placeholder="Cellphone" required v-model="firstParentInfo.cellPhone">
+                        </div>
+                        <div class="col-6 col-md-6 mb-2">
+                            <input type="mail" class="form-control" id="parentFirstInfoMail" placeholder="EMail Adress" required v-model="firstParentInfo.email">
+                        </div>
+                        <div class="col-6 col-md-6 mb-2">
+                            <input type="text" class="form-control" id="parentFirstInfoOccupation" placeholder="Occupation" v-model="firstParentInfo.occupation">
+                        </div>
+                        <div class="col-6 col-md-6 mb-2">
+                            <input type="text" class="form-control" id="parentFirstInfoTitle" placeholder="Title" v-model="firstParentInfo.title">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <input type="text" class="form-control" id="parentFirstInfoCompany" placeholder="Company/Organization" v-model="firstParentInfo.companyOrganization">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-0">
+                        <div class="col-12">
+                            <label for="parentFirstInfoCellphone">Work Address</label>
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <input type="text" class="form-control" id="parentFirstInfoWorkAdress" placeholder="City" v-model="firstParentInfo.workAdressCity">
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <select class="form-control" id="parentFirstInfoWorkState" v-model="firstParentInfo.workAdressState">
+                                <option value="none">State</option>
+                                <option value="AK">AK</option>
+                                <option value="AL">AL</option>
+                                <option value="AR">AR</option>
+                                <option value="AZ">AZ</option>
+                                <option value="BC">BC</option>
+                                <option value="CA">CA</option>
+                                <option value="CO">CO</option>
+                                <option value="CT">CT</option>
+                                <option value="D">D</option>
+                                <option value="DC">DC</option>
+                                <option value="DE">DE</option>
+                                <option value="FL">FL</option>
+                                <option value="GA">GA</option>
+                                <option value="HI">HI</option>
+                                <option value="IA">IA</option>
+                                <option value="ID">ID</option>
+                                <option value="IL">IL</option>
+                                <option value="IN">IN</option>
+                                <option value="KS">KS</option>
+                                <option value="KY">KY</option>
+                                <option value="LA">LA</option>
+                                <option value="MA">MA</option>
+                                <option value="MD">MD</option>
+                                <option value="ME">ME</option>
+                                <option value="MI">MI</option>
+                                <option value="MN">MN</option>
+                                <option value="MO">MO</option>
+                                <option value="MS">MS</option>
+                                <option value="MT">MT</option>
+                                <option value="NC">NC</option>
+                                <option value="ND">ND</option>
+                                <option value="NE">NE</option>
+                                <option value="NH">NH</option>
+                                <option value="NJ">NJ</option>
+                                <option value="NM">NM</option>
+                                <option value="NV">NV</option>
+                                <option value="NY">NY</option>
+                                <option value="OA">OA</option>
+                                <option value="OH">OH</option>
+                                <option value="OK">OK</option>
+                                <option value="ON">ON</option>
+                                <option value="OR">OR</option>
+                                <option value="PA">PA</option>
+                                <option value="PS">PS</option>
+                                <option value="QB">QB</option>
+                                <option value="RI">RI</option>
+                                <option value="SC">SC</option>
+                                <option value="SD">SD</option>
+                                <option value="TN">TN</option>
+                                <option value="TX">TX</option>
+                                <option value="UT">UT</option>
+                                <option value="VA">VA</option>
+                                <option value="VI">VI</option>
+                                <option value="VT">VT</option>
+                                <option value="WA">WA</option>
+                                <option value="WI">WI</option>
+                                <option value="WV">WV</option>
+                                <option value="WY">WY</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 mb-2">
+                            <input type="text" class="form-control" id="parentFirstInfoWorkZip" placeholder="Zip" v-model="firstParentInfo.workAdressZip">
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-6 mb-2">
+                            <input type="text" class="form-control" id="parentFirstInfoWorkCountry" placeholder="Country if not US" v-model="firstParentInfo.workAdressCountry">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <input type="text" class="form-control" id="parentFirstInfoWorkPhone" placeholder="Work Phone" v-model="firstParentInfo.workAdressPhone">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="parentFirstInfoCollege">Education</label>
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <input type="text" class="form-control" id="parentFirstInfoCollege" placeholder="College(s) Attended" v-model="firstParentInfo.educationCollege">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <input type="text" class="form-control" id="parentFirstInfoSchool" placeholder="Secondary School Attended" v-model="firstParentInfo.educationSecondary">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-0">
+                        <div class="col-12">
+                            <label for="parentFirstInfoCellphone" class="form-label">Parent or Guardian 2 Second</label>
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <input type="text" class="form-control" id="parentSecondInfoFirstName" placeholder="First Name" v-model="secondParentInfo.firstName">
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <input type="text" class="form-control" id="parentSecondInfoSecondName" placeholder="Last Name" v-model="secondParentInfo.lastName">
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <input type="tel" class="form-control" id="parentSecondInfoCellphone" placeholder="Cellphone" v-model="secondParentInfo.cellPhone">
+                        </div>
+                        <div class="col-6 col-md-6 mb-2">
+                            <input type="mail" class="form-control" id="parentSecondInfoMail" placeholder="EMail Adress" v-model="secondParentInfo.email">
+                        </div>
+                        <div class="col-6 col-md-6 mb-2">
+                            <input type="text" class="form-control" id="parentSecondInfoOccupation" placeholder="Occupation" v-model="secondParentInfo.occupation">
+                        </div>
+                        <div class="col-6 col-md-6 mb-2">
+                            <input type="text" class="form-control" id="parentSecondInfoTitle" placeholder="Title" v-model="secondParentInfo.title">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <input type="text" class="form-control" id="parentSecondInfoCompany" placeholder="Company/Organization" v-model="secondParentInfo.companyOrganization">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-0">
+                        <div class="col-12">
+                            <label for="parentFirstInfoCellphone">Work Address</label>
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <input type="text" class="form-control" id="parentSecondInfoWorkAdress" placeholder="City" v-model="secondParentInfo.workAdressCity">
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <select class="form-control" id="parentSecondInfoWorkState" v-model="secondParentInfo.workAdressState">
+                                <option value="none">State</option>
+                                <option value="AK">AK</option>
+                                <option value="AL">AL</option>
+                                <option value="AR">AR</option>
+                                <option value="AZ">AZ</option>
+                                <option value="BC">BC</option>
+                                <option value="CA">CA</option>
+                                <option value="CO">CO</option>
+                                <option value="CT">CT</option>
+                                <option value="D">D</option>
+                                <option value="DC">DC</option>
+                                <option value="DE">DE</option>
+                                <option value="FL">FL</option>
+                                <option value="GA">GA</option>
+                                <option value="HI">HI</option>
+                                <option value="IA">IA</option>
+                                <option value="ID">ID</option>
+                                <option value="IL">IL</option>
+                                <option value="IN">IN</option>
+                                <option value="KS">KS</option>
+                                <option value="KY">KY</option>
+                                <option value="LA">LA</option>
+                                <option value="MA">MA</option>
+                                <option value="MD">MD</option>
+                                <option value="ME">ME</option>
+                                <option value="MI">MI</option>
+                                <option value="MN">MN</option>
+                                <option value="MO">MO</option>
+                                <option value="MS">MS</option>
+                                <option value="MT">MT</option>
+                                <option value="NC">NC</option>
+                                <option value="ND">ND</option>
+                                <option value="NE">NE</option>
+                                <option value="NH">NH</option>
+                                <option value="NJ">NJ</option>
+                                <option value="NM">NM</option>
+                                <option value="NV">NV</option>
+                                <option value="NY">NY</option>
+                                <option value="OA">OA</option>
+                                <option value="OH">OH</option>
+                                <option value="OK">OK</option>
+                                <option value="ON">ON</option>
+                                <option value="OR">OR</option>
+                                <option value="PA">PA</option>
+                                <option value="PS">PS</option>
+                                <option value="QB">QB</option>
+                                <option value="RI">RI</option>
+                                <option value="SC">SC</option>
+                                <option value="SD">SD</option>
+                                <option value="TN">TN</option>
+                                <option value="TX">TX</option>
+                                <option value="UT">UT</option>
+                                <option value="VA">VA</option>
+                                <option value="VI">VI</option>
+                                <option value="VT">VT</option>
+                                <option value="WA">WA</option>
+                                <option value="WI">WI</option>
+                                <option value="WV">WV</option>
+                                <option value="WY">WY</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 mb-2">
+                            <input type="text" class="form-control" id="parentSecondInfoWorkZip" placeholder="Zip" v-model="secondParentInfo.workAdressZip">
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-6 mb-2">
+                            <input type="text" class="form-control" id="parentSecondInfoWorkCountry" placeholder="Country if not US" v-model="secondParentInfo.workAdressCountry">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <input type="text" class="form-control" id="parentSecondInfoWorkPhone" placeholder="Work Phone" v-model="secondParentInfo.workAdressPhone">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="parentFirstInfoCollege">Education</label>
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <input type="text" class="form-control" id="parentSecondInfoCollege" placeholder="College(s) Attended" v-model="secondParentInfo.educationCollege">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <input type="text" class="form-control" id="parentSecondInfoSchool" placeholder="Secondary School Attended" v-model="secondParentInfo.educationSecondary">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="parentInfoFamilyStatus" class="form-label">Family Status</label>
+                        </div>
+                        <div class="col-12 row ml-1 mb-2">
+                            <div class="form-check col-6">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="familyStatusRadios" id="familyStatusTogether" value="familyStatusTogether" v-model="parrentsInfo.statusRadio">
+                                    Parents Together
+                                </label>
+                            </div>
+                            <div class="form-check col-6">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="familyStatusRadios" id="familyStatusDivorced" value="familyStatusDivorced" v-model="parrentsInfo.statusRadio">
+                                    Parents Divorced
+                                </label>
+                            </div>
+                            <div class="form-check col-6">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="familyStatusRadios" id="familyStatusNotTogether" value="familyStatusNotTogether" v-model="parrentsInfo.statusRadio">
+                                    Parents Not Living Together
+                                </label>
+                            </div>
+                            <div class="form-check col-6">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="familyStatusRadios" id="familyStatusOneParrent" value="familyStatusOneParrent" v-model="parrentsInfo.statusRadio">
+                                    Only Has One Parent
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12 row ml-2">
+                            <label class="form-check-label col-6 pb-0">
+                                <input class="form-check-input" type="checkbox" id="familyStatusMotherRemarried" value="statusMotherRemarried" v-model="parrentsInfo.statusChecked1">
+                                Mother Remarried
+                            </label>
+                            <label class="form-check-label col-6">
+                                <input class="form-check-input" type="checkbox" id="familyStatusFatherRemarried" value="statusFatherRemarried" v-model="parrentsInfo.statusChecked2">
+                                Father Remarried
+                            </label>
+                            <label class="form-check-label col-6">
+                                <input class="form-check-input" type="checkbox" id="familyStatusMotherDeceased" value="statusMotherDeceased" v-model="parrentsInfo.statusChecked3">
+                                Mother Deceased
+                            </label>
+                            <label class="form-check-label col-6">
+                                <input class="form-check-input" type="checkbox" id="familyStatusFatherDeceased" value="statusFatherDeceased" v-model="parrentsInfo.statusChecked4">
+                                Father Deceased
+                            </label>
+                        </div>
+                        <div class="col-6 mt-4">
+                            <label for="familyStatusReside">With whom does the child reside?</label>
+                        </div>
+                        <div class="col-6 mt-3">
+                            <input type="text" class="form-control" id="familyStatusReside" placeholder="Enter With Whome" v-model="parrentsInfo.childReside">
+                        </div>
+                        <div class="col-6 mt-4">
+                            <label for="familyStatusCorrespondence">To whom should correspondence be sent?</label>
+                        </div>
+                        <div class="col-6 mt-3">
+                            <select class="form-control" id="familyStatusCorrespondence" v-model="parrentsInfo.corrSend">
+                                <option value="both">Both</option>
+                                <option value="mother">Mother</option>
+                                <option value="father">Father</option>
+                            </select>
+                        </div>
+                        <div class="col-6 mt-4">
+                            <label for="familyStatusFinancial">Who is the responsible financial party?</label>
+                        </div>
+                        <div class="col-6 mt-3">
+                            <input type="text" class="form-control" id="familyStatusFinancial" placeholder="Enter Who" v-model="parrentsInfo.whoFinancial">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="parentInfoSibling" class="form-label">Siblings Of Applicant</label>
+                        </div>
+                        <div class="col-12 row" v-for="item in siblingsList">
+                            <div class="col-6 col-lg-3 mb-2">
+                                <label for="parentInfoSibling">Name</label>
+                                <input type="text" class="form-control" id="parentInfoSibling" placeholder="Enter Name" v-model="item.name">
+                            </div>
+                            <div class="col-6 col-lg-3 mb-2">
+                                <label for="parentInfoSiblingBirth">Date of Birth</label>
+                                <input type="date" class="form-control" id="parentInfoSiblingBirth" placeholder="Secondary School Attended" v-model="item.dateBirth">
+                            </div>
+                            <div class="col-5 col-lg-3 mb-2">
+                                <label for="parentInfoSiblingGrade">Current Grade</label>
+                                <input type="text" class="form-control" id="parentInfoSiblingGrade" placeholder="Enter Grade" v-model="item.currentGrade">
+                            </div>
+                            <div class="col-5 col-lg-2 mb-2">
+                                <label for="parentInfoSiblingSchool">Present School</label>
+                                <input type="text" class="form-control" id="parentInfoSiblingSchool" placeholder="Enter School" v-model="item.presentSchool">
+                            </div>
+                            <div class="col-2 col-lg-1 d-flex align-items-center justify-content-center mt-3">
+                                <button type="button" class="btn btn-primary btn-sibling" title="Add Another Sibling" @click="addSibling">+</button>
+                            </div>
+                        </div>
+                        <div class="form-check col-6 ml-3 mt-2">
+                            <label class="form-check-label">
+                                <input class="form-check-input sibling1-check" type="checkbox">Is sibling currently enrolled in Viewpoint?
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="parentInfoSibling" class="form-label">Relatives of The Applicant Who Have Attended Viewpoint School</label>
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <input type="text" class="form-control" id="parentInfoAttendedName" placeholder="Name">
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <input type="text" class="form-control" id="parentInfoAttendedRelationship" placeholder="Relationship">
+                        </div>
+                        <div class="col-12 col-md-4 mb-2">
+                            <input type="text" class="form-control" id="parentInfoAttendedYears" placeholder="Years Attended">
+                        </div>
+                    </div>
+                    <div class="button d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-danger btn-cancel" @click="backApplication">Back</button>
+                        <button type="submit" class="btn btn-outline-success btn-next">Next</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="container" v-else-if="step == 5">
+            <div class="another-info form">
+                <h2 class="signup-title mb-4 text-center">Another Information</h2>
+                <form class="another-form" @submit.prevent="submitForm">
+                    <div class="form-group row">
+                        <div class="col-12 col-lg-6 mb-2 d-lg-flex flex-column justify-content-between">
+                            <label for="firstTextarea">We are interested to learn why you are applying your child to Viewpoint School. What type of learning environment are you seeking for your child, and what are your expectations of Viewpoint?</label>
+                            <textarea class="form-control" id="firstTextarea" rows="3" v-model="anotherInfo.firstArea"></textarea>
+                        </div>
+                        <div class="col-12 col-lg-6 mb-2 d-lg-flex flex-column justify-content-between">
+                            <label for="secondTextarea">Are there particular skills or talents you hope your child will cultivate at Viewpoint? Conversely, what do you believe your child might contribute to our community?</label>
+                            <textarea class="form-control" id="secondTextarea" rows="3" v-model="anotherInfo.secondArea"></textarea>
+                        </div>
+                        <div class="col-12 col-lg-6 mb-2 d-lg-flex flex-column justify-content-between">
+                            <label for="thirdTextarea">Tell us a little about your child’s special interests, skills, and activities, as well as any talents or achievements, either inside or outside of school.</label>
+                            <textarea class="form-control" id="thirdTextarea" rows="3" v-model="anotherInfo.thirdArea"></textarea>
+                        </div>
+                        <div class="col-12 col-lg-6 mb-2 d-lg-flex flex-column justify-content-between">
+                            <label for="fourthTextarea">Please describe an experience that posed an academic and/or extracurricular challenge for your child. How did your child respond to that challenge?</label>
+                            <textarea class="form-control" id="fourthTextarea" rows="3" v-model="anotherInfo.fourthArea"></textarea>
+                        </div>
+                        <div class="col-12 col-lg-6 mb-2 d-lg-flex flex-column justify-content-between">
+                            <label for="fifthTextarea">We cherish these values at Viewpoint: <b>Find Your Voice. Give Your Best. Go Beyond.</b> Tell us a brief anecdote about your child that you think speaks to one or more of these.</label>
+                            <textarea class="form-control" id="fifthTextarea" rows="3" v-model="anotherInfo.fifthArea"></textarea>
+                        </div>
+                        <div class="col-12 col-lg-6 mb-2 d-lg-flex flex-column justify-content-between">
+                            <label for="sixthTextarea">At Viewpoint, parents are valued community members, actively engaging through volunteerism and philanthropy. Please tell us about your involvement in the life of your child’s current or previous school, and any other volunteer, support, or philanthropic activities in which you may have engaged.</label>
+                            <textarea class="form-control" id="sixthTextarea" rows="3" v-model="anotherInfo.sixthArea"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-6 col-md-3">
+                            <label for="childSkippedSchool">Has your child ever skipped a grade in school?</label>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <select class="form-control mb-2 mb-lg-0" id="childSkippedSchool" v-model="anotherInfo.childSkipped">
+                                <option></option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                        <div class="col-6 col-md-3 mb-3">
+                            <label for="childSkippedSchoolWhich" class="mt-2">If yes, which grade?</label>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <input type="text" class="form-control" id="childSkippedSchoolWhich" placeholder="Enter Grade" v-model="anotherInfo.reasonSkipped">
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <label for="childRepeatedSchool">Has your child ever repeated a grade?</label>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <select class="form-control mb-2 mb-lg-0" id="childRepeatedSchool" v-model="anotherInfo.childRepeated">
+                                <option></option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <label for="childRepeatedWhich" class="mt-2">If yes, which grade?</label>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <input type="text" class="form-control" id="childRepeatedWhich" placeholder="Enter Grade" v-model="anotherInfo.reasonReapeted">
+                        </div>
+                        <div class="col-12 col-md-6 mt-2">
+                            <label for="childDisciplinarySchool">Has your child ever been subject to any serious disciplinary action, suspension, or expulsion from school?</label>
+                        </div>
+                        <div class="col-12 col-md-6 mt-2">
+                            <select class="form-control mb-2 mb-lg-0" id="childDisciplinarySchool" v-model="anotherInfo.childDisciplinary">
+                                <option value="none"></option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="childDisciplinaryWhich" class="mt-0 mt-md-2">If yes, please explain.</label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <input type="text" class="form-control" id="childDisciplinaryWhich" placeholder="Enter Explain" v-model="anotherInfo.disciplinaryExplain">
+                        </div>
+                        <div class="col-12 col-md-6 mt-2">
+                            <label for="languagesInHome" class="mt-0 mt-md-2">List all languages spoken in the home.</label>
+                        </div>
+                        <div class="col-12 col-md-6 mt-0 mt-md-2">
+                            <input type="text" class="form-control" id="languagesInHome" placeholder="Enter Languages" v-model="anotherInfo.childLanguages">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="childInitiative" class="form-label">For Families Applying to Grades Six to Twelve Only:</label>
+                        </div>
+                        <div class="col-12">
+                            <small id="familiesApplyingHelp" class="form-text text-muted m-0 mb-2">The character skills listed below are present in everyone, in different amounts, at different times in their lives. As parents, you know your child better than anyone else in the world. Think about <b>your child today</b>, and check off where you see them.</small>
+                        </div>
+                        <div class="col-6 col-md-3 mt-2 mb-2">
+                            <label for="childInitiative">Initiative</label>
+                        </div>
+                        <div class="col-6 col-md-3 mb-2">
+                            <select class="form-control mb-2 mb-lg-0" id="childInitiative" v-model="anotherInfo.initiative">
+                                <option value="none"></option>
+                                <option value="Emerging">Emerging (Starting to show signs of this skill)</option>
+                                <option value="Developing">Developing (This skill is present and still developing)</option>
+                                <option value="Demonstrating">Demonstrating (Clear understanding and use of this skill)</option>
+                                <option value="No basis for judgment">No basis for judgment</option>
+                            </select>
+                        </div>
+                        <div class="col-6 col-md-3 mt-0 mt-lg-2 mb-2">
+                            <label for="childIntellectual">Intellectual Engagement</label>
+                        </div>
+                        <div class="col-6 col-md-3 mb-2">
+                            <select class="form-control mb-2 mb-lg-0" id="childIntellectual" v-model="anotherInfo.intellectualEngagement">
+                                <option value="none"></option>
+                                <option value="Emerging">Emerging (Starting to show signs of this skill)</option>
+                                <option value="Developing">Developing (This skill is present and still developing)</option>
+                                <option value="Demonstrating">Demonstrating (Clear understanding and use of this skill)</option>
+                                <option value="No basis for judgment">No basis for judgment</option>
+                            </select>
+                        </div>
+                        <div class="col-6 col-md-3 mt-2 mb-2">
+                            <label for="childMindedness">Open-mindedness</label>
+                        </div>
+                        <div class="col-6 col-md-3 mb-2">
+                            <select class="form-control mb-2 mb-lg-0" id="childMindedness" v-model="anotherInfo.openMindedness">
+                                <option value="none"></option>
+                                <option value="Emerging">Emerging (Starting to show signs of this skill)</option>
+                                <option value="Developing">Developing (This skill is present and still developing)</option>
+                                <option value="Demonstrating">Demonstrating (Clear understanding and use of this skill)</option>
+                                <option value="No basis for judgment">No basis for judgment</option>
+                            </select>
+                        </div>
+                        <div class="col-6 col-md-3 mt-2 mb-2">
+                            <label for="childResilience">Resilience</label>
+                        </div>
+                        <div class="col-6 col-md-3 mb-2">
+                            <select class="form-control mb-2 mb-lg-0" id="childResilience" v-model="anotherInfo.resilience">
+                                <option value="none"></option>
+                                <option value="Emerging">Emerging (Starting to show signs of this skill)</option>
+                                <option value="Developing">Developing (This skill is present and still developing)</option>
+                                <option value="Demonstrating">Demonstrating (Clear understanding and use of this skill)</option>
+                                <option value="No basis for judgment">No basis for judgment</option>
+                            </select>
+                        </div>
+                        <div class="col-6 col-md-3 mt-2 mb-2">
+                            <label for="childSelfcontrol">Self-Control</label>
+                        </div>
+                        <div class="col-6 col-md-3 mb-2">
+                            <select class="form-control mb-2 mb-lg-0" id="childSelfcontrol" v-model="anotherInfo.selfControl">
+                                <option value="none"></option>
+                                <option value="Emerging">Emerging (Starting to show signs of this skill)</option>
+                                <option value="Developing">Developing (This skill is present and still developing)</option>
+                                <option value="Demonstrating">Demonstrating (Clear understanding and use of this skill)</option>
+                                <option value="No basis for judgment">No basis for judgment</option>
+                            </select>
+                        </div>
+                        <div class="col-6 col-md-3 mt-2 mb-2">
+                            <label for="childSocialAwareness">Social Awareness</label>
+                        </div>
+                        <div class="col-6 col-md-3 mb-2">
+                            <select class="form-control mb-2 mb-lg-0" id="childSocialAwareness" v-model="anotherInfo.socialAwareness">
+                                <option value="none"></option>
+                                <option value="Emerging">Emerging (Starting to show signs of this skill)</option>
+                                <option value="Developing">Developing (This skill is present and still developing)</option>
+                                <option value="Demonstrating">Demonstrating (Clear understanding and use of this skill)</option>
+                                <option value="No basis for judgment">No basis for judgment</option>
+                            </select>
+                        </div>
+                        <div class="col-6 mt-2 mb-2">
+                            <label for="childTeamwork">Teamwork</label>
+                        </div>
+                        <div class="col-6">
+                            <select class="form-control mb-2 mb-lg-0" id="childTeamwork" v-model="anotherInfo.teamwork">
+                                <option value="none"></option>
+                                <option value="Emerging">Emerging (Starting to show signs of this skill)</option>
+                                <option value="Developing">Developing (This skill is present and still developing)</option>
+                                <option value="Demonstrating">Demonstrating (Clear understanding and use of this skill)</option>
+                                <option value="No basis for judgment">No basis for judgment</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="" class="form-label">Financial Aid</label>
+                        </div>
+                        <div class="col-12">
+                            <small id="familiesApplyingHelp" class="form-text text-muted m-0 mb-2">Viewpoint School believes the primary responsibility for financing a child’s education rests upon the family. After a family assesses all of its resources, the School encourages them to apply for financial aid to make up any difference between the cost of education and the family’s contribution.</small>
+                        </div>
+                        <div class="col-12">
+                            <small id="familiesApplyingHelp" class="form-text text-muted m-0 mb-2">More information about our Financial Aid program can be found on our website at <a href="www.viewpoint.org/admission/finaid">www.viewpoint.org/admission/finaid</a> under Financial Aid. <b>The application deadline is January 15, and families must use the SSS/PFS online application service found on our website.</b></small>
+                        </div>
+                        <div class="form-check col-12">
+                            <label class="form-check-label ml-3">
+                                <input class="form-check-input aid-check" type="checkbox" required>I am applying with financial aid
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="" class="form-label">Ethnicity (Optional)</label>
+                        </div>
+                        <div class="col-12">
+                            <small id="familiesApplyingHelp" class="form-text text-muted m-0 mb-2">The National and California Associations of Independent Schools request that Viewpoint provide aggregate information about the diversity of our applicants and enrollees. If you would like to be included in these data, please complete the following:</small>
+                        </div>
+                        <div class="col-6">
+                            <select class="form-control mb-2 mb-lg-0" id="childEthnicity" v-model="anotherInfo.ethnicity">
+                                <option value="none"></option>
+                                <option value="African">African</option>
+                                <option value="African-American">African-American</option>
+                                <option value="African-American/Asian-America">African-American/Asian-America</option>
+                                <option value="African-American/Caucasian">African-American/Caucasian</option>
+                                <option value="African-American/Filipino">African-American/Filipino</option>
+                                <option value="African-American/Jamacan">African-American/Jamacan</option>
+                                <option value="African-American/Jamaican">African-American/Jamaican</option>
+                                <option value="African-American/Latino-Hispan">African-American/Latino-Hispan</option>
+                                <option value="African-American/Native Americ">African-American/Native Americ</option>
+                                <option value="Armenian">Armenian</option>
+                                <option value="Asian-American">Asian-American</option>
+                                <option value="Asian-American/Caucasian">Asian-American/Caucasian</option>
+                                <option value="Asian-American/Filipino">Asian-American/Filipino</option>
+                                <option value="Asian-American/Pacific Islande">Asian-American/Pacific Islande</option>
+                                <option value="Caucasian">Caucasian</option>
+                                <option value="Caucasian/Asian/Middle-Eastern">Caucasian/Asian/Middle-Eastern</option>
+                                <option value="Caucasian/Middle Eastern">Caucasian/Middle Eastern</option>
+                                <option value="Caucasian/Native American">Caucasian/Native American</option>
+                                <option value="Filipino">Filipino</option>
+                                <option value="Filipino/African-American">Filipino/African-American</option>
+                                <option value="Hispanic/Native American">Hispanic/Native American</option>
+                                <option value="Indian/American">Indian/American</option>
+                                <option value="International">International</option>
+                                <option value="Latino-Hispanic">Latino-Hispanic</option>
+                                <option value="Latino-Hispanic/Asian American">Latino-Hispanic/Asian American</option>
+                                <option value="Latino-Hispanic/Caucasian">Latino-Hispanic/Caucasian</option>
+                                <option value="Latino-Hispanic/Middle-Eastern">Latino-Hispanic/Middle-Eastern</option>
+                                <option value="Middle-Eastern">Middle-Eastern</option>
+                                <option value="Middle-Eastern/Asian-American">Middle-Eastern/Asian-American</option>
+                                <option value="Middle-Eastern/Caucasian">Middle-Eastern/Caucasian</option>
+                                <option value="Multiracial">Multiracial</option>
+                                <option value="Native American">Native American</option>
+                                <option value="Native American/Caucasian">Native American/Caucasian</option>
+                                <option value="Other/Prefer not to respond">Other/Prefer not to respond</option>
+                                <option value="Pacific Islander">Pacific Islander</option>
+                                <option value="South Asian/InAm/Caucasian">South Asian/InAm/Caucasian</option>
+                                <option value="South Asian/Indian-American">South Asian/Indian-American</option>
+                                <option value="hispanic-american">hispanic-american</option>
+                                <option value="usa">usa</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="" class="form-label">Signature</label>
+                        </div>
+                        <div class="form-check col-12">
+                            <label class="form-check-label ml-3">
+                                <input class="form-check-input signature-check" type="checkbox" required>We (I) certify that the information provided on this application is true and accurate. We (I) understand and agree that the Director's and Teacher's Evaluations are confidential and will not be disclosed to me or become part of my child's permanent file.
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <small id="familiesApplyingHelp" class="form-text text-muted m-0 mb-2">Viewpoint School is committed to enrolling a diverse student body. The School admits students of any race, color, gender, religion, or national or ethnic origin to all the rights, privileges, programs, and activities generally accorded or made available to students at the School. The School does not discriminate on the basis of race, color, gender, sexual orientation, religion, or national or ethnic origin in the administration of its educational policies, admission and tuition assistance policies, and athletic, or other school-administered programs.</small>
+                        </div>
+                    </div>
+                    <div class="button d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-danger btn-cancel" @click="step = 4">Back</button>
+                        <button type="submit" class="btn btn-outline-success btn-next submit-form">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            step: 1,
+            selectedData: 1,
+            selectApplication: 0,
+            userInfo: {
+                userName: '',
+                password: '',
+                rePassword: '',
+                firstName: '',
+                lastName: '',
+                email: '',
+                phone: '',
+            },
+            kindergartenInfo: {
+                starting: '',
+                firstName: '',
+                middleName: '',
+                lastName: '',
+                nameCalled: '',
+                birthDate: '',
+                childAge: '',
+                childGender: '',
+                placeBirth: '',
+                citizenship: '',
+                visaViewpoint: '',
+                visaType: '',
+            },
+            schoolList: [{
+                schoolName: '',
+                schoolAdress: '',
+                schoolCity: '',
+                schoolState: '',
+                schoolDatesFrom: '',
+                schoolDatesTo: '',
+            }, ],
+            gradesInfo: {
+                admissionGrade: '',
+                starting: '',
+                firstName: '',
+                middleName: '',
+                lastName: '',
+                nameCalled: '',
+                birthDate: '',
+                childAge: '',
+                childGender: '',
+                placeBirth: '',
+                citizenship: '',
+                visaViewpoint: '',
+                visaType: '',
+                appliedViewpointBefore: '',
+                appliedViewpointWhen: '',
+                testing: '',
+                referal: '',
+            },
+            parrentsInfo: {
+                homeAdress: '',
+                cityAdress: '',
+                stateAdress: '',
+                zipAdress: '',
+                countryAdress: '',
+                phoneAdress: '',
+                statusRadio: '',
+                statusChecked1: '',
+                statusChecked2: '',
+                statusChecked3: '',
+                statusChecked4: '',
+                childReside: '',
+                corrSend: '',
+                whoFinancial: '',
+            },
+            firstParentInfo: {
+                firstName: '',
+                lastName: '',
+                cellPhone: '',
+                email: '',
+                occupation: '',
+                title: '',
+                companyOrganization: '',
+                workAdressCity: '',
+                workAdressState: '',
+                workAdressZip: '',
+                workAdressCountry: '',
+                workAdressPhone: '',
+                educationCollege: '',
+                educationSecondary: '',
+            },
+            secondParentInfo: {
+                firstName: '',
+                lastName: '',
+                cellPhone: '',
+                email: '',
+                occupation: '',
+                title: '',
+                companyOrganization: '',
+                workAdressCity: '',
+                workAdressState: '',
+                workAdressZip: '',
+                workAdressCountry: '',
+                workAdressPhone: '',
+                educationCollege: '',
+                educationSecondary: '',
+            },
+            siblingsList: [{
+                name: '',
+                dateBirth: '',
+                currentGrade: '',
+                presentSchool: '',
+            }, ],
+            anotherInfo: {
+                firstArea: '',
+                secondArea: '',
+                thirdArea: '',
+                fourthArea: '',
+                fifthArea: '',
+                sixthArea: '',
+                childSkipped: '',
+                reasonSkipped: '',
+                childRepeated: '',
+                reasonReapeted: '',
+                childDisciplinary: '',
+                disciplinaryExplain: '',
+                childLanguages: '',
+                initiative: '',
+                intellectualEngagement: '',
+                openMindedness: '',
+                resilience: '',
+                selfControl: '',
+                socialAwareness: '',
+                teamwork: '',
+                ethnicity: '',
+            }
+        },
+        computed: {
+            selectWindow() {
+                return this.selectedData;
+            }
+        },
+        methods: {
+            checkedSignup: function(e) {
+                let self = this;
+                var signupButton = document.querySelector(".btn-signup");
+                var rePassInput = document.querySelector("#signupRePassword");
+
+                if (self.userInfo.password != self.userInfo.rePassword) {
+                    rePassInput.setCustomValidity('Passwords do not match');
+                    setTimeout(function() {
+                        rePassInput.setCustomValidity('');
+                    }, 3000);
+                    return;
+                } else {
+                    $.ajax({
+                        url: "https://js.dump.academy/kekstagram/data",
+                        data: self.userInfo,
+                        success: function() {
+                            alert('Data is sent:' + self.userInfo);
+                            signupButton.disabled = true;
+                        },
+                        error: function() {
+                            alert('Something went wrong.');
+                        },
+                    });
+                }
+            },
+            choiceApplication: function(event) {
+                if (event.target.id === 'kinderButton') {
+                    this.selectApplication = 1;
+                    this.step = 2;
+                } else {
+                    this.selectApplication = 2;
+                    this.step = 3;
+                }
+            },
+            backApplication: function() {
+                if (this.selectApplication === 1) {
+                    this.step = 2;
+                } else {
+                    this.step = 3;
+                }
+            },
+            submitForm: function() {
+                let self = this;
+                var submitButton = document.querySelector('.submit-form');
+
+                if (this.selectApplication === 1) {
+                    $.ajax({
+                        url: "https://js.dump.academy/kekstagram/data",
+                        data: { kindergartenInfo: self.kindergartenInfo, schoolList: self.schoolList, parrentsInfo: self.parrentsInfo, firstParentInfo: self.firstParentInfo, secondParentInfo: self.secondParentInfo, siblingsList: self.siblingsList, anotherInfo: self.anotherInfo },
+                        success: function() {
+                            submitButton.disabled = true;
+                            alert('Data is sent:' + self.userInfo);
+                        },
+                        error: function() {
+                            alert('Something went wrong.');
+                        },
+                    });
+                } else if (this.selectApplication === 2) {
+                    $.ajax({
+                        url: "https://js.dump.academy/kekstagram/data",
+                        data: { gradesInfo: self.gradesInfo, parrentsInfo: self.parrentsInfo, firstParentInfo: self.firstParentInfo, secondParentInfo: self.secondParentInfo, siblingsList: self.siblingsList, anotherInfo: self.anotherInfo },
+                        success: function() {
+                            submitButton.disabled = true;
+                            alert('Data is sent:' + self.userInfo);
+                        },
+                        error: function() {
+                            alert('Something went wrong.');
+                        },
+                    });
+                }
+            },
+            addSchool: function() {
+                this.schoolList.push({
+                    schoolName: '',
+                    schoolAdress: '',
+                    schoolCity: '',
+                    schoolState: '',
+                    schoolDatesFrom: '',
+                    schoolDatesTo: '',
+                });
+            },
+            addSibling: function() {
+                this.siblingsList.push({
+                    name: '',
+                    dateBirth: '',
+                    currentGrade: '',
+                    presentSchool: '',
+                });
+            },
+        }
+    })
+    </script>
+</body>
+
+</html>
